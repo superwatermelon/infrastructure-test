@@ -1,5 +1,6 @@
 SWARM_MANAGER_KEY_PAIR := swarm-manager
 SWARM_WORKER_KEY_PAIR := swarm-worker
+AWS_REGION := eu-west-1
 
 default: load plan
 
@@ -13,7 +14,7 @@ plan:
 
 keys:
 	pip install -r requirements.txt
-	scripts/init-keys.py \
+	AWS_DEFAULT_REGION=$(AWS_REGION) scripts/init-keys.py \
 		--swarm-manager-key-pair $(SWARM_MANAGER_KEY_PAIR) \
 		--swarm-worker-key-pair $(SWARM_WORKER_KEY_PAIR)
 
