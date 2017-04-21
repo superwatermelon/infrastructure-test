@@ -20,7 +20,7 @@ parser.add_argument(
     help='specify the name to give the session')
 
 def format_env_vars(env):
-    return '\n'.join('export {}="{}"'.format(k, v) for k, v in env.items()
+    return '\n'.join('export {}="{}"'.format(k, v) for k, v in env.items())
 
 def parse_env_vars(credentials):
     return {
