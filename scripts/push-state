@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+
+#
+# Pushes the updated tfstate back to S3. This is called after
+# running Terraform jobs on a build agent so that the next
+# build has access to the current state of the infrastructure.
+#
+
+import boto3
+from botocore.exceptions import ClientError
+import argparse
+
+parser = argparse.ArgumentParser(
+    description='Pulls the tfstate from S3.')
+parser.add_argument(
+    '--bucket', required=True,
+    help='specify the bucket where the tfstate resides')
+
+def main():
+    args = parser.parse_args()
+
+    client = boto3.client('s3')
+
+    response = client.put_object(
+        Bucket=args.bucket,
+        Key='terraform.tfstate',
+        Body=open('terraform.tfstate', 'rb')
+    )
+
+if __name__ == '__main__':
+    main()
