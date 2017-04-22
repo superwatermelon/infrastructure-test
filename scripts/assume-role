@@ -18,26 +18,30 @@ parser.add_argument(
 parser.add_argument(
     '--role-session-name', required=True,
     help='specify the name to give the session')
+parser.add_argument(
+    '--output', required=True,
+    help='the file path to output the credentials')
 
-def format_env_vars(env):
-    return '\n'.join('export {}="{}"'.format(k, v) for k, v in env.items())
+def format_credential_vars(env):
+    return '\n'.join('{} = {}'.format(k, v) for k, v in env.items())
 
-def parse_env_vars(credentials):
+def parse_credential_vars(credentials):
     return {
-        'AWS_ACCESS_KEY_ID': credentials['AccessKeyId'],
-        'AWS_SECRET_ACCESS_KEY': credentials['SecretAccessKey'],
-        'AWS_SESSION_TOKEN': credentials['SessionToken']
+        'aws_access_key_id': credentials['AccessKeyId'],
+        'aws_secret_access_key': credentials['SecretAccessKey'],
+        'aws_session_token': credentials['SessionToken']
     }
 
-def assume_role(role_arn, role_session_name):
+def assume_role(role_arn, role_session_name, output):
     client = boto3.client('sts')
     response = client.assume_role(
         RoleArn=role_arn,
         RoleSessionName=role_session_name
     )
-    print(format_env_vars(parse_env_vars(response['Credentials'])))
+    with open(output, 'w') as f:
+        f.write('[default]\n{}\n'.format(format_credential_vars(parse_credential_vars(response['Credentials']))))
 
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    assume_role(args.role_arn, args.role_session_name)
+    assume_role(args.role_arn, args.role_session_name, args.output)
