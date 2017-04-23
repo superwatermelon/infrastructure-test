@@ -10,6 +10,7 @@ load:
 
 plan:
 	terraform plan \
+		-no-color \
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
 		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
 		-out $(TFPLAN_PATH) \
@@ -21,10 +22,13 @@ keys:
 		--swarm-worker-key-pair $(SWARM_WORKER_KEY_PAIR)
 
 apply: keys
-	terraform apply -state $(TFSTATE_PATH) $(TFPLAN_PATH)
+	terraform apply \
+		-no-color \
+		-state $(TFSTATE_PATH) $(TFPLAN_PATH)
 
 destroy:
 	terraform destroy \
+		-no-color \
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
 		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
 		-state $(TFSTATE_PATH)
