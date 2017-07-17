@@ -131,6 +131,23 @@ resource "aws_route_table_association" "subnet_rtb" {
   route_table_id = "${aws_route_table.public_rtb.id}"
 }
 
+resource "aws_route53_zone" "zone" {
+  name = "test.superwatermelon.org"
+  comment = "The internal private hosted zone"
+  vpc_id = "${aws_vpc.vpc.id}"
+  tags {
+    Name = "${var.stack_name}-zone"
+  }
+}
+
+resource "aws_route53_record" "git_record" {
+  zone_id = "${aws_route53_zone.zone.zone_id}"
+  name = "swarm.test.superwatermelon.org"
+  type = "A"
+  ttl = "300"
+  records = ["${module.swarm.manager_public_ip}"]
+}
+
 output "swarm_manager_public_ip" {
   value = "${module.swarm.manager_public_ip}"
 }
