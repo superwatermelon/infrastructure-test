@@ -2,55 +2,37 @@
  * A Swarm cluster with a single Manager.
  */
 
-variable "coreos_ami" {
-  description = "The CoreOS AMI to use for both Swarm Manager and Worker nodes"
-}
-
-variable "manager_key_pair" {
+variable "swarm_manager_key_pair" {
   description = "The name of the key pair to use for the Swarm Manager node"
 }
 
-variable "manager_subnet" {
-  description = "The subnet into which to deploy the Swarm Manager node"
-}
-
-variable "manager_instance_type" {
-  default = "t2.micro"
-  description = "The AWS instance type to use for the Swarm Manager node"
-}
-
-variable "worker_key_pair" {
+variable "swarm_worker_key_pair" {
   description = "The name of the key pair to use for the Swarm Worker nodes"
 }
 
-variable "worker_subnets" {
-  type = "list"
-  description = "The subnets into which to deploy Swarm Worker nodes"
+variable "swarm_manager_instance_type" {
+  description = "The AWS instance type to use for the Swarm Manager node"
+  default     = "t2.micro"
 }
 
-variable "worker_instance_type" {
-  default = "t2.nano"
+variable "swarm_worker_instance_type" {
   description = "The AWS instance type to use for the Swarm Worker nodes"
+  default     = "t2.nano"
 }
 
-variable "stack_name" {
-  default = "swarm"
-  description = "The name to prefix resources"
-}
-
-variable "desired_worker_count" {
-  default = 2
+variable "desired_swarm_worker_count" {
   description = "The number of Swarm Worker nodes desired"
+  default     = 2
 }
 
-variable "max_worker_count" {
-  default = 9
+variable "max_swarm_worker_count" {
   description = "The maximum number of Swarm Worker nodes to allow"
+  default     = 9
 }
 
-variable "min_worker_count" {
-  default = 2
+variable "min_swarm_worker_count" {
   description = "The minimum number of Swarm Worker nodes to allow"
+  default     = 2
 }
 
 data "template_file" "swarm_docker_tcp_service" {
@@ -95,7 +77,7 @@ data "template_file" "swarm_manager_ignition" {
 EOF
   vars {
     swarm_docker_tcp_service = "${jsonencode(data.template_file.swarm_docker_tcp_service.rendered)}"
-    swarm_manager_service = "${jsonencode(data.template_file.swarm_manager_service.rendered)}"
+    swarm_manager_service    = "${jsonencode(data.template_file.swarm_manager_service.rendered)}"
   }
 }
 
@@ -136,49 +118,52 @@ EOF
 }
 
 resource "aws_instance" "swarm_manager" {
+  ami           = "${data.aws_ami.coreos.id}"
+  instance_type = "${var.swarm_manager_instance_type}"
+  key_name      = "${var.swarm_manager_key_pair}"
+  subnet_id     = "${aws_subnet.subnet.0.id}"
+  user_data     = "${data.template_file.swarm_manager_ignition.rendered}"
+
+  tags {
+    Name = "${var.stack_name}-swarm-manager"
+  }
   lifecycle {
     create_before_destroy = true
   }
-  ami = "${var.coreos_ami}"
-  instance_type = "${var.manager_instance_type}"
-  key_name = "${var.manager_key_pair}"
-  subnet_id = "${var.manager_subnet}"
-  tags {
-    Name = "${var.stack_name}-manager"
-  }
-  user_data = "${data.template_file.swarm_manager_ignition.rendered}"
 }
 
 resource "aws_launch_configuration" "swarm_worker" {
+  image_id      = "${data.aws_ami.coreos.id}"
+  instance_type = "${var.swarm_worker_instance_type}"
+  key_name      = "${var.swarm_worker_key_pair}"
+  name_prefix   = "${var.stack_name}-swarm-worker-"
+  user_data     = "${data.template_file.swarm_worker_ignition.rendered}"
+
   lifecycle {
     create_before_destroy = true
   }
-  image_id = "${var.coreos_ami}"
-  instance_type = "${var.worker_instance_type}"
-  key_name = "${var.worker_key_pair}"
-  name_prefix = "${var.stack_name}-worker-"
-  user_data = "${data.template_file.swarm_worker_ignition.rendered}"
 }
 
 resource "aws_autoscaling_group" "swarm_worker_asg" {
-  lifecycle {
-    create_before_destroy = true
-  }
-  desired_capacity = "${var.desired_worker_count}"
+  desired_capacity     = "${var.desired_swarm_worker_count}"
   launch_configuration = "${aws_launch_configuration.swarm_worker.name}"
-  max_size = "${var.max_worker_count}"
-  min_size = "${var.min_worker_count}"
-  name = "${aws_launch_configuration.swarm_worker.name}-asg"
+  max_size             = "${var.max_swarm_worker_count}"
+  min_size             = "${var.min_swarm_worker_count}"
+  name                 = "${aws_launch_configuration.swarm_worker.name}-asg"
+  vpc_zone_identifier  = ["${aws_subnet.subnet.*.id}"]
+
   tag {
-    key = "Name"
+    key                 = "Name"
     propagate_at_launch = true
-    value = "${aws_launch_configuration.swarm_worker.name}"
+    value               = "${aws_launch_configuration.swarm_worker.name}"
   }
   termination_policies = [
     "OldestLaunchConfiguration",
     "OldestInstance"
   ]
-  vpc_zone_identifier = ["${var.worker_subnets}"]
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 output "manager_public_ip" {
