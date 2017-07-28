@@ -13,7 +13,7 @@ ifndef TEST_HOSTED_ZONE
 endif
 
 load:
-	terraform get
+	terraform get $(DIR)
 
 plan: check
 	terraform plan \
