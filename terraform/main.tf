@@ -140,7 +140,3 @@ resource "aws_route53_record" "swarm_record" {
   ttl     = "300"
   records = ["${aws_instance.swarm_manager.private_ip}"]
 }
-
-output "swarm_manager_public_ip" {
-  value = "${aws_instance.swarm_manager.public_ip}"
-}

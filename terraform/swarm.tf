@@ -166,6 +166,10 @@ resource "aws_autoscaling_group" "swarm_worker_asg" {
   }
 }
 
-output "manager_public_ip" {
+output "swarm_manager_public_ip" {
   value = "${aws_instance.swarm_manager.public_ip}"
+}
+
+output "swarm_worker_asg" {
+  value = "${aws_autoscaling_group.swarm_worker_asg.id}"
 }
