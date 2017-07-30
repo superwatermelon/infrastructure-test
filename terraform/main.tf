@@ -140,3 +140,19 @@ resource "aws_route53_record" "swarm_record" {
   ttl     = "300"
   records = ["${aws_instance.swarm_manager.private_ip}"]
 }
+
+output "vpc" {
+  value = "${aws_vpc.vpc.id}"
+}
+
+output "cidr_block" {
+  value = "${aws_vpc.vpc.cidr_block}"
+}
+
+output "subnets" {
+  value = ["${list(aws_subnet.subnet.*.id)}"]
+}
+
+output "route_table" {
+  value = "${aws_route_table.public_rtb.id}"
+}
