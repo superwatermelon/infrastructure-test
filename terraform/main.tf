@@ -150,7 +150,7 @@ output "cidr_block" {
 }
 
 output "subnets" {
-  value = ["${list(aws_subnet.subnet.*.id)}"]
+  value = ["${aws_subnet.subnet.*.id}"]
 }
 
 output "route_table" {
