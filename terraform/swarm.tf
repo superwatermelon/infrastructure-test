@@ -188,7 +188,7 @@ resource "aws_security_group" "swarm_worker_sg" {
 }
 
 resource "aws_security_group" "swarm_node_sg" {
-  name        = "swarm-worker"
+  name        = "swarm-node"
   description = "Security group for Swarm workers"
   vpc_id      = "${aws_vpc.vpc.id}"
 
@@ -210,7 +210,7 @@ resource "aws_security_group_rule" "swarm_node_to_node" {
 }
 
 resource "aws_security_group" "swarm_load_balancer_sg" {
-  name        = "swarm-worker"
+  name        = "swarm-load-balancer"
   description = "Security group for Swarm load balancers"
   vpc_id      = "${aws_vpc.vpc.id}"
 }
