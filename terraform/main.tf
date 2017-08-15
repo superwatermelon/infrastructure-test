@@ -141,6 +141,12 @@ resource "aws_route53_record" "swarm_record" {
   records = ["${aws_instance.swarm_manager.private_ip}"]
 }
 
+resource "aws_security_group" "users_sg" {
+  name        = "users"
+  description = "Security group for internal users"
+  vpc_id      = "${aws_vpc.vpc.id}"
+}
+
 output "vpc" {
   value = "${aws_vpc.vpc.id}"
 }
