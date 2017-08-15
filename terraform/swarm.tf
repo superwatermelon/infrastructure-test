@@ -216,6 +216,15 @@ resource "aws_security_group" "swarm_load_balancer_sg" {
 }
 
 resource "aws_security_group_rule" "swarm_load_balancer_to_worker" {
+  type                     = "egress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  source_security_group_id = "${aws_security_group.swarm_worker_sg.id}"
+  security_group_id        = "${aws_security_group.swarm_load_balancer_sg.id}"
+}
+
+resource "aws_security_group_rule" "swarm_worker_from_load_balancer" {
   type                     = "ingress"
   from_port                = 0
   to_port                  = 0
