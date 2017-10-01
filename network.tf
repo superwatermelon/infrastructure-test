@@ -21,11 +21,6 @@ variable "availability_zone" {
   ]
 }
 
-variable "stack_name" {
-  description = "The prefix name to prepend to resources"
-  default     = "test"
-}
-
 variable "vpc_cidr_range" {
   description = "The CIDR range for the VPC"
   default     = "10.128.32.0/22"
@@ -38,33 +33,6 @@ variable "subnet_cidr_range" {
     "10.128.33.0/24",
     "10.128.34.0/24"
   ]
-}
-
-variable "coreos_owner" {
-  description = "The account ID for the owner of the CoreOS AMI"
-  default     = "595879546273"
-}
-
-variable "test_hosted_zone" {
-  description = "The private hosted zone to use for this VPC."
-}
-
-provider "aws" {
-  region = "${var.aws_region}"
-}
-
-data "aws_ami" "coreos" {
-  most_recent = true
-  owners      = ["${var.coreos_owner}"]
-
-  filter {
-    name = "name"
-    values = ["CoreOS-stable-*"]
-  }
-  filter {
-    name = "virtualization-type"
-    values = ["hvm"]
-  }
 }
 
 resource "aws_vpc" "vpc" {
@@ -121,30 +89,6 @@ resource "aws_route_table_association" "subnet_rtb" {
   count          = 3
   subnet_id      = "${element(aws_subnet.subnet.*.id, count.index)}"
   route_table_id = "${aws_route_table.public_rtb.id}"
-}
-
-resource "aws_route53_zone" "zone" {
-  name    = "${var.test_hosted_zone}"
-  comment = "The internal private hosted zone"
-  vpc_id  = "${aws_vpc.vpc.id}"
-
-  tags {
-    Name = "${var.stack_name}-zone"
-  }
-}
-
-resource "aws_route53_record" "swarm_record" {
-  zone_id = "${aws_route53_zone.zone.zone_id}"
-  name    = "swarm.${var.test_hosted_zone}"
-  type    = "A"
-  ttl     = "300"
-  records = ["${aws_instance.swarm_manager.private_ip}"]
-}
-
-resource "aws_security_group" "users_sg" {
-  name        = "users"
-  description = "Security group for internal users"
-  vpc_id      = "${aws_vpc.vpc.id}"
 }
 
 output "vpc" {
