@@ -32,7 +32,7 @@ keys:
 apply: keys
 	terraform apply \
 		-no-color \
-		-state $(TFSTATE_PATH) $(TFPLAN_PATH)
+		$(TFPLAN_PATH)
 
 destroy: check
 	terraform destroy \

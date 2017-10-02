@@ -2,5 +2,5 @@
 
 if ! aws ec2 describe-key-pairs --key-name "${KEY_PAIR}" &> /dev/null
 then
-  aws ec2 create-key-pair --key-name "${KEY_PAIR}" | jq -r .KeyMaterial
+  exec aws ec2 create-key-pair --key-name "${KEY_PAIR}" | jq -r .KeyMaterial
 fi
