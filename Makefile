@@ -22,7 +22,7 @@ plan: check
 		-no-color \
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
 		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
-		-var test_hosted_zone=$(HOSTED_ZONE) \
+		-var hosted_zone=$(HOSTED_ZONE) \
 		-out $(TFPLAN_PATH)
 
 keys:
@@ -39,6 +39,6 @@ destroy: check
 		-no-color \
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
 		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
-		-var test_hosted_zone=$(HOSTED_ZONE)
+		-var hosted_zone=$(HOSTED_ZONE)
 
 .PHONY: default load save plan keys apply destroy
