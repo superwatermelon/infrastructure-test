@@ -7,4 +7,4 @@ credentials='"[default]\n${access_key_id}\n${secret_access_key}\n${session_token
 
 aws sts assume-role \
     --role-arn "${ROLE_ARN}" \
-    --role-session-name "${ROLE_SESSION_NAME}" | jq -r "${credentials}"
+    --role-session-name "${ROLE_SESSION_NAME}" | jq -r "${credentials}" > "$1"
