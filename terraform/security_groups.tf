@@ -1,6 +1,16 @@
+resource "aws_default_security_group" "default_sg" {
+  name        = "test"
+  description = "Test"
+  vpc_id      = "${aws_vpc.vpc.id}"
+
+  tags {
+    Name = "test"
+  }
+}
+
 resource "aws_security_group" "users_sg" {
   name        = "users"
-  description = "Security group for internal users"
+  description = "Internal users"
   vpc_id      = "${aws_vpc.vpc.id}"
 
   tags {
@@ -10,7 +20,7 @@ resource "aws_security_group" "users_sg" {
 
 resource "aws_security_group" "swarm_manager_sg" {
   name        = "swarm-manager"
-  description = "Security group for Swarm managers"
+  description = "Swarm managers"
   vpc_id      = "${aws_vpc.vpc.id}"
 
   tags {
@@ -20,7 +30,7 @@ resource "aws_security_group" "swarm_manager_sg" {
 
 resource "aws_security_group" "swarm_worker_sg" {
   name        = "swarm-worker"
-  description = "Security group for Swarm workers"
+  description = "Swarm workers"
   vpc_id      = "${aws_vpc.vpc.id}"
 
   tags {
@@ -30,7 +40,7 @@ resource "aws_security_group" "swarm_worker_sg" {
 
 resource "aws_security_group" "swarm_node_sg" {
   name        = "swarm-node"
-  description = "Security group for Swarm workers"
+  description = "Swarm node"
   vpc_id      = "${aws_vpc.vpc.id}"
 
   egress {
