@@ -1,9 +1,11 @@
 #!/bin/bash
 
+PROFILE_NAME=${PROFILE_NAME:-default}
+
 access_key_id='aws_access_key_id = \"" + .Credentials.AccessKeyId + "\"'
 secret_access_key='aws_secret_access_key = \"" + .Credentials.SecretAccessKey + "\"'
 session_token='aws_session_token = \"" + .Credentials.SessionToken + "\"'
-credentials="\"[default]\n${access_key_id}\n${secret_access_key}\n${session_token}\""
+credentials="\"[${PROFILE_NAME}]\n${access_key_id}\n${secret_access_key}\n${session_token}\""
 
 aws sts assume-role \
     --role-arn "${ROLE_ARN}" \
