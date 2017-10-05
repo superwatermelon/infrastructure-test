@@ -10,4 +10,4 @@ credentials="\"[${PROFILE_NAME}]\n${access_key_id}\n${secret_access_key}\n${sess
 meta_data_url="http://169.254.169.254/latest/meta-data"
 security_credentials_url="${meta_data_url}/iam/security-credentials"
 
-curl "${security_credentials_url}/${ROLE_NAME}" | jq -r "${credentials}"
+wget -qO- "${security_credentials_url}/${ROLE_NAME}" | jq -r "${credentials}"
