@@ -4,7 +4,7 @@ PROFILE_NAME=${PROFILE_NAME:-default}
 
 access_key_id='aws_access_key_id = \"" + .AccessKeyId + "\"'
 secret_access_key='aws_secret_access_key = \"" + .SecretAccessKey + "\"'
-session_token='aws_session_token = \"" + .SessionToken + "\"'
+session_token='aws_session_token = \"" + .Token + "\"'
 credentials="\"[${PROFILE_NAME}]\n${access_key_id}\n${secret_access_key}\n${session_token}\""
 
 meta_data_url="http://169.254.169.254/latest/meta-data"
