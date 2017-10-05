@@ -26,7 +26,7 @@ resource "aws_launch_configuration" "swarm_worker" {
   image_id        = "${data.aws_ami.coreos.id}"
   instance_type   = "${var.swarm_worker_instance_type}"
   key_name        = "${var.swarm_worker_key_pair}"
-  name_prefix     = "${var.stack_name}-swarm-worker-"
+  name_prefix     = "swarm-worker-"
   user_data       = "${data.template_file.swarm_worker_ignition.rendered}"
   security_groups = [
     "${aws_security_group.swarm_worker_sg.id}",

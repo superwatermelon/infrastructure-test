@@ -24,7 +24,7 @@ resource "aws_instance" "swarm_manager" {
   ]
 
   tags {
-    Name = "${var.stack_name}-swarm-manager"
+    Name = "swarm-manager"
   }
   lifecycle {
     create_before_destroy = true
