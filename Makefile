@@ -42,6 +42,7 @@ endif
 .PHONY: load
 load: check
 	$(TERRAFORM) init \
+		-no-color \
 		-backend=true \
 		-input=false \
 		-backend-config bucket=$(TFSTATE_BUCKET) \

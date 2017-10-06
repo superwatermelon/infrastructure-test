@@ -17,7 +17,6 @@ data "aws_caller_identity" "internal" {
 }
 
 data "terraform_remote_state" "internal" {
-  provider = "aws.internal"
   backend  = "s3"
 
   config {
