@@ -21,7 +21,7 @@ data "terraform_remote_state" "internal" {
 
   config {
     bucket = "${var.internal_tfstate_bucket}"
-    name   = "terraform.tfstate"
+    key    = "terraform.tfstate"
   }
 }
 
