@@ -31,14 +31,6 @@ ifndef SWARM_WORKER_KEY_PAIR
 	$(error SWARM_WORKER_KEY_PAIR is undefined)
 endif
 
-ifndef INTERNAL_TFSTATE_BUCKET
-	$(error INTERNAL_TFSTATE_BUCKET is undefined)
-endif
-
-ifndef INTERNAL_AWS_PROFILE
-	$(error INTERNAL_AWS_PROFILE is undefined)
-endif
-
 .PHONY: load
 load: check
 	$(TERRAFORM) init \
@@ -56,8 +48,6 @@ plan: check
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
 		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
 		-var hosted_zone=$(HOSTED_ZONE) \
-		-var internal_tfstate_bucket=$(INTERNAL_TFSTATE_BUCKET) \
-		-var internal_aws_profile=$(INTERNAL_AWS_PROFILE) \
 		-out $(TFPLAN_PATH) \
 		$(TERRAFORM_DIR)
 
@@ -79,6 +69,4 @@ destroy: check
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
 		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
 		-var hosted_zone=$(HOSTED_ZONE) \
-		-var internal_tfstate_bucket=$(INTERNAL_TFSTATE_BUCKET) \
-		-var internal_aws_profile=$(INTERNAL_AWS_PROFILE) \
 		$(TERRAFORM_DIR)
