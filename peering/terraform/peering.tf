@@ -28,7 +28,7 @@ data "terraform_remote_state" "seed" {
 
   config {
     bucket  = "${var.seed_tfstate_bucket}"
-    key     = "seed.tfstate"
+    key     = "terraform.tfstate"
     profile = "${var.internal_aws_profile}"
   }
 }
