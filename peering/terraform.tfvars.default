@@ -1,0 +1,5 @@
+internal_aws_profile    = "internal"
+
+internal_tfstate_bucket = "internal"
+
+test_tfstate_bucket     = "test"

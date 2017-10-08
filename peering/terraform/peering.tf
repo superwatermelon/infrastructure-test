@@ -1,6 +1,5 @@
 variable "internal_aws_profile" {
   description = "The AWS profile for the internal account access"
-  default     = "internal"
 }
 
 variable "internal_tfstate_bucket" {
@@ -20,11 +19,21 @@ data "aws_caller_identity" "internal" {
   provider = "aws.internal"
 }
 
-data "terraform_remote_state" "internal" {
+data "terraform_remote_state" "seed" {
   backend  = "s3"
 
   config {
     bucket  = "${var.internal_tfstate_bucket}"
+    key     = "seed.tfstate"
+    profile = "${var.internal_aws_profile}"
+  }
+}
+
+data "terraform_remote_state" "internal" {
+  backend  = "s3"
+
+  config {
+    bucket  = "${data.terraform_remote_state.seed.internal_tfstate_bucket}"
     key     = "terraform.tfstate"
     profile = "${var.internal_aws_profile}"
   }
@@ -34,7 +43,7 @@ data "terraform_remote_state" "test" {
   backend  = "s3"
 
   config {
-    bucket  = "${var.test_tfstate_bucket}"
+    bucket  = "${data.terraform_remote_state.seed.test_tfstate_bucket}"
     key     = "terraform.tfstate"
   }
 }

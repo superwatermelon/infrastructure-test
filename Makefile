@@ -11,18 +11,6 @@ default: load plan
 
 .PHONY: check
 check:
-ifndef AWS_DEFAULT_REGION
-	$(error AWS_DEFAULT_REGION is undefined)
-endif
-
-ifndef TFSTATE_BUCKET
-	$(error TFSTATE_BUCKET is undefined)
-endif
-
-ifndef HOSTED_ZONE
-	$(error HOSTED_ZONE is undefined)
-endif
-
 ifndef SWARM_MANAGER_KEY_PAIR
 	$(error SWARM_MANAGER_KEY_PAIR is undefined)
 endif
@@ -36,9 +24,8 @@ load: check
 	$(TERRAFORM) init \
 		-no-color \
 		-backend=true \
+		-backend-config=backend.tfvars \
 		-input=false \
-		-backend-config bucket=$(TFSTATE_BUCKET) \
-		-backend-config region=$(AWS_DEFAULT_REGION) \
 		$(TERRAFORM_DIR)
 
 .PHONY: plan
@@ -47,7 +34,6 @@ plan: check
 		-no-color \
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
 		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
-		-var hosted_zone=$(HOSTED_ZONE) \
 		-out $(TFPLAN_PATH) \
 		$(TERRAFORM_DIR)
 
@@ -68,5 +54,4 @@ destroy: check
 		-no-color \
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
 		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
-		-var hosted_zone=$(HOSTED_ZONE) \
 		$(TERRAFORM_DIR)
