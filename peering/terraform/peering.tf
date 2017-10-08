@@ -69,7 +69,7 @@ resource "aws_vpc_peering_connection" "test" {
   vpc_id        = "${data.terraform_remote_state.test.vpc_id}"
   peer_vpc_id   = "${data.terraform_remote_state.internal.vpc_id}"
   peer_owner_id = "${data.aws_caller_identity.internal.account_id}"
-  auto_accept   = true
+  auto_accept   = false
 
   accepter {
     allow_remote_vpc_dns_resolution = true
