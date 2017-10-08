@@ -1,3 +1,7 @@
+variable "seed_tfstate_bucket" {
+  description = "The name of the S3 bucket hosting seed state"
+}
+
 variable "internal_aws_profile" {
   description = "The AWS profile for the internal account access"
 }
@@ -7,7 +11,7 @@ variable "internal_tfstate_bucket" {
 }
 
 variable "test_tfstate_bucket" {
-  description = "The name of the S3 bucket hosting internal state"
+  description = "The name of the S3 bucket hosting test state"
 }
 
 provider "aws" {
@@ -23,7 +27,7 @@ data "terraform_remote_state" "seed" {
   backend  = "s3"
 
   config {
-    bucket  = "${var.internal_tfstate_bucket}"
+    bucket  = "${var.seed_tfstate_bucket}"
     key     = "seed.tfstate"
     profile = "${var.internal_aws_profile}"
   }

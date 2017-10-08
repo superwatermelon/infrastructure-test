@@ -1,3 +1,5 @@
+seed_tfstate_bucket     = "seed"
+
 internal_aws_profile    = "internal"
 
 internal_tfstate_bucket = "internal"
