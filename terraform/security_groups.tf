@@ -93,3 +93,7 @@ resource "aws_security_group_rule" "swarm_worker_from_load_balancer" {
 output "swarm_load_balancer_sg" {
   value = "${aws_security_group.swarm_load_balancer_sg.id}"
 }
+
+output "swarm_manager_sg" {
+  value = "${aws_security_group.swarm_manager_sg.id}"
+}
