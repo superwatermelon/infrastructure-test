@@ -15,24 +15,22 @@ load:
 		-no-color \
 		-backend=true \
 		-input=false \
-		-backend-config=backend.tfvars \
-		$(TERRAFORM_DIR)
+		-backend-config=backend.hcl
 
 .PHONY: plan
 plan:
 	$(TERRAFORM) plan \
 		-no-color \
-		-out $(TFPLAN_PATH) \
-		$(TERRAFORM_DIR)
+		-out $(TFPLAN_PATH)
 
 .PHONY: apply
 apply:
 	$(TERRAFORM) apply \
 		-no-color \
 		$(TFPLAN_PATH)
+	scripts/associate-vpc
 
 .PHONY: destroy
 destroy:
 	$(TERRAFORM) destroy \
-		-no-color \
-		$(TERRAFORM_DIR)
+		-no-color

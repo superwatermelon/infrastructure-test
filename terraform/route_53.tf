@@ -19,3 +19,7 @@ resource "aws_route53_record" "swarm_record" {
   ttl     = "300"
   records = ["${aws_instance.swarm_manager.private_ip}"]
 }
+
+output "hosted_zone_id" {
+  value = "${aws_route53_zone.zone.id}"
+}

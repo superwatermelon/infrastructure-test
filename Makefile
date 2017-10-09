@@ -24,7 +24,7 @@ load: check
 	$(TERRAFORM) init \
 		-no-color \
 		-backend=true \
-		-backend-config=backend.tfvars \
+		-backend-config=backend.hcl \
 		-input=false \
 		$(TERRAFORM_DIR)
 

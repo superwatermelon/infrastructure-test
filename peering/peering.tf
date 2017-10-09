@@ -85,3 +85,11 @@ resource "aws_vpc_peering_connection_accepter" "internal" {
     allow_remote_vpc_dns_resolution = true
   }
 }
+
+output "internal_vpc_id" {
+  value = "${data.terraform_remote_state.internal.vpc_id}"
+}
+
+output "test_hosted_zone_id" {
+  value = "${data.terraform_remote_state.test.hosted_zone_id}"
+}

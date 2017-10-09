@@ -1,0 +1,48 @@
+#!/bin/bash
+
+get_hosted_zone() {
+  aws --profile "${test_profile}" route53 get-hosted-zone --id "${test_hosted_zone_id}"
+}
+
+contains_vpc() {
+  jq -r '.VPCs[] | .VPCId' | grep -q "${internal_vpc_id}"
+}
+
+create_vpc_association_authorization() {
+  aws --profile "${test_profile}" route53 create-vpc-association-authorization \
+    --hosted-zone-id "${test_hosted_zone_id}" \
+    --vpc "VPCRegion=${internal_vpc_region},VPCId=${internal_vpc_id}"
+}
+
+associate_vpc_with_hosted_zone() {
+  aws --profile "${internal_profile}" route53 associate-vpc-with-hosted-zone \
+    --hosted-zone-id "${test_hosted_zone_id}" \
+    --vpc "VPCRegion=${internal_vpc_region},VPCId=${internal_vpc_id}"
+}
+
+test_profile="${TEST_AWS_PROFILE}"
+internal_profile="${INTERNAL_AWS_PROFILE}"
+test_hosted_zone_id="$(terraform output test_hosted_zone_id)"
+internal_vpc_region="${AWS_DEFAULT_REGION}"
+internal_vpc_id="$(terraform output internal_vpc_id)"
+
+if [[ -z "${test_hosted_zone_id}" ]]
+then
+  echo "Could not load test_hosted_zone_id output from tfstate" >& 2
+  exit 1
+fi
+
+if [[ -z "${internal_vpc_id}" ]]
+then
+  echo "Could not load internal_vpc_id output from tfstate" >& 2
+  exit 1
+fi
+
+if get_hosted_zone | contains_vpc
+then
+  echo "VPC already associated with Hosted Zone. Nothing to do"
+  exit 0
+else
+  create_vpc_association_authorization
+  associate_vpc_with_hosted_zone
+fi
