@@ -39,22 +39,3 @@ EOF
     swarm_manager_host = "${aws_instance.swarm_manager.private_ip}"
   }
 }
-
-data "template_file" "swarm_worker_ignition" {
-  template = <<EOF
-{
-  "ignition":{"version":"2.0.0"},
-  "systemd":{
-    "units":[
-      {"name":"docker.socket","enable":true},
-      {"name":"containerd.service","enable":true},
-      {"name":"docker.service","enable":true},
-      {"name":"swarm-worker.service","enable":true,"contents":$${swarm_worker_service}}
-    ]
-  }
-}
-EOF
-  vars {
-    swarm_worker_service = "${jsonencode(data.template_file.swarm_worker_service.rendered)}"
-  }
-}
