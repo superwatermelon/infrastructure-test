@@ -32,10 +32,6 @@ resource "aws_launch_configuration" "swarm_worker" {
     "${aws_security_group.swarm_worker_sg.id}",
     "${aws_security_group.swarm_node_sg.id}"
   ]
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_autoscaling_group" "swarm_worker_asg" {
@@ -44,7 +40,7 @@ resource "aws_autoscaling_group" "swarm_worker_asg" {
   max_size             = "${var.max_swarm_worker_count}"
   min_size             = "${var.min_swarm_worker_count}"
   name                 = "${aws_launch_configuration.swarm_worker.name}-asg"
-  vpc_zone_identifier  = ["${aws_subnet.subnet.*.id}"]
+  vpc_zone_identifier  = ["${aws_subnet.private.*.id}"]
 
   tag {
     key                 = "Name"
@@ -55,9 +51,6 @@ resource "aws_autoscaling_group" "swarm_worker_asg" {
     "OldestLaunchConfiguration",
     "OldestInstance"
   ]
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 output "swarm_worker_asg" {

@@ -22,7 +22,7 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-resource "aws_default_route_table" "default_rtb" {
+resource "aws_default_route_table" "default" {
   default_route_table_id = "${aws_vpc.vpc.default_route_table_id}"
 
   tags {
@@ -38,7 +38,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-resource "aws_route_table" "public_rtb" {
+resource "aws_route_table" "dmz" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   route {
@@ -46,7 +46,23 @@ resource "aws_route_table" "public_rtb" {
     gateway_id = "${aws_internet_gateway.igw.id}"
   }
   tags {
-    Name = "test-public"
+    Name = "test-dmz"
+  }
+}
+
+resource "aws_route_table" "private" {
+  vpc_id = "${aws_vpc.vpc.id}"
+
+  tags {
+    Name = "test-private"
+  }
+}
+
+resource "aws_route_table" "data" {
+  vpc_id = "${aws_vpc.vpc.id}"
+
+  tags {
+    Name = "test-data"
   }
 }
 
@@ -59,5 +75,5 @@ output "cidr_block" {
 }
 
 output "peering_rtb" {
-  value = "${aws_route_table.public_rtb.id}"
+  value = "${aws_route_table.data.id}"
 }
