@@ -97,3 +97,7 @@ output "swarm_load_balancer_sg" {
 output "swarm_manager_sg" {
   value = "${aws_security_group.swarm_manager_sg.id}"
 }
+
+output "swarm_worker_sg" {
+  value = "${aws_security_group.swarm_worker_sg.id}"
+}
