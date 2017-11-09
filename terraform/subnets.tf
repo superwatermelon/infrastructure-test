@@ -42,7 +42,7 @@ resource "aws_subnet" "dmz" {
   map_public_ip_on_launch = true
 
   tags {
-    Name = "test-dmz"
+    Name = "test-dmz-${var.availability_zone[count.index]}"
   }
 }
 
@@ -62,7 +62,7 @@ resource "aws_subnet" "private" {
   map_public_ip_on_launch = true
 
   tags {
-    Name = "test-private"
+    Name = "test-private-${var.availability_zone[count.index]}"
   }
 }
 
@@ -82,7 +82,7 @@ resource "aws_subnet" "data" {
   map_public_ip_on_launch = true
 
   tags {
-    Name = "test-data"
+    Name = "test-data-${var.availability_zone[count.index]}"
   }
 }
 

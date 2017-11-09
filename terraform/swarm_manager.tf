@@ -26,9 +26,6 @@ resource "aws_instance" "swarm_manager" {
   tags {
     Name = "swarm-manager"
   }
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 output "swarm_manager_public_ip" {
