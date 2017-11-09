@@ -57,7 +57,9 @@ resource "aws_subnet" "private" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "${var.private_subnet_cidr_range[count.index]}"
   availability_zone       = "${var.availability_zone[count.index]}"
-  map_public_ip_on_launch = false
+
+  # Temporarily keep internet access open
+  map_public_ip_on_launch = true
 
   tags {
     Name = "test-private"
@@ -75,7 +77,9 @@ resource "aws_subnet" "data" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "${var.data_subnet_cidr_range[count.index]}"
   availability_zone       = "${var.availability_zone[count.index]}"
-  map_public_ip_on_launch = false
+
+  # Temporarily keep internet access open
+  map_public_ip_on_launch = true
 
   tags {
     Name = "test-data"
