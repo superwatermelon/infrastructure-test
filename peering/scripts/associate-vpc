@@ -9,7 +9,7 @@ contains_vpc() {
 }
 
 create_vpc_association_authorization() {
-  echo "test"
+  echo "test: ${test_profile}"
   aws --profile "${test_profile}" sts get-caller-identity
   aws --profile "${test_profile}" route53 create-vpc-association-authorization \
     --hosted-zone-id "${test_hosted_zone_id}" \
@@ -17,7 +17,7 @@ create_vpc_association_authorization() {
 }
 
 associate_vpc_with_hosted_zone() {
-  echo "internal"
+  echo "internal: ${internal_profile}"
   aws --profile "${internal_profile}" sts get-caller-identity
   aws --profile "${internal_profile}" route53 associate-vpc-with-hosted-zone \
     --hosted-zone-id "${test_hosted_zone_id}" \
@@ -29,6 +29,8 @@ internal_profile="${INTERNAL_AWS_PROFILE}"
 test_hosted_zone_id="$(terraform output test_hosted_zone_id)"
 internal_vpc_region="${AWS_DEFAULT_REGION}"
 internal_vpc_id="$(terraform output internal_vpc_id)"
+
+cat ~/.aws/credentials
 
 if [[ -z "${test_hosted_zone_id}" ]]
 then
