@@ -16,7 +16,7 @@ variable "hosted_zone" {
 
 variable "swarm_manager_volume_device" {
   description = "The device name of the Swarm Manager volume"
-  default     = "xvdk"
+  default     = "xvdf"
 }
 
 variable "swarm_manager_format_data" {

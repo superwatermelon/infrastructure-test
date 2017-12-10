@@ -28,7 +28,7 @@ resource "aws_ebs_volume" "swarm_manager" {
 }
 
 resource "aws_volume_attachment" "swarm_manager" {
-  device_name = "/dev/xvdf"
+  device_name = "/dev/${var.swarm_manager_volume_device}"
   volume_id   = "${aws_ebs_volume.swarm_manager.id}"
   instance_id = "${aws_instance.swarm_manager.id}"
 }

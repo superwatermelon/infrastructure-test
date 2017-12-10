@@ -13,10 +13,6 @@ data "template_file" "swarm_worker_service" {
   }
 }
 
-data "template_file" "swarm_manager_data_service_unit" {
-  template = "${file("${path.module}/templates/swarm_manager_data_systemd.tpl")}"
-}
-
 data "template_file" "var_lib_docker_swarm_mount_unit" {
   template = "${file("${path.module}/templates/var_lib_docker_swarm_systemd.tpl")}"
   vars {
