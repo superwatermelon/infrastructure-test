@@ -28,6 +28,20 @@ resource "aws_instance" "swarm_manager" {
   }
 }
 
+resource "aws_ebs_volume" "swarm_manager" {
+  availability_zone = "${aws_subnet.data.0.availability_zone}"
+  size = 10
+  tags {
+    Name = "swarm-manager"
+  }
+}
+
+resource "aws_volume_attachment" "swarm_manager" {
+  device_name = "/dev/xvdf"
+  volume_id   = "${aws_ebs_volume.swarm_manager.id}"
+  instance_id = "${aws_instance.swarm_manager.id}"
+}
+
 output "swarm_manager_public_ip" {
   value = "${aws_instance.swarm_manager.public_ip}"
 }
