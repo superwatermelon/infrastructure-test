@@ -15,14 +15,18 @@ data "template_file" "swarm_manager_ignition" {
       {"name":"containerd.service","enable":true},
       {"name":"docker.service","enable":true},
       {"name":"docker-tcp.socket","enable":true,"contents":$${swarm_docker_tcp_service}},
-      {"name":"swarm-manager.service","enable":true,"contents":$${swarm_manager_service}}
+      {"name":"swarm-manager-init.service","enable":$${swarm_manager_init},"contents":$${swarm_manager_init_service}}
+      {"name":"swarm-manager-join.service","enable":$${swarm_manager_join},"contents":$${swarm_manager_join_service}}
     ]
   }
 }
 EOF
   vars {
-    swarm_docker_tcp_service = "${jsonencode(data.template_file.swarm_docker_tcp_service.rendered)}"
-    swarm_manager_service    = "${jsonencode(data.template_file.swarm_manager_service.rendered)}"
+    swarm_docker_tcp_service   = "${jsonencode(data.template_file.swarm_docker_tcp_service.rendered)}"
+    swarm_manager_init_service = "${jsonencode(data.template_file.swarm_manager_init_service.rendered)}"
+    swarm_manager_join_service = "${jsonencode(data.template_file.swarm_manager_join_service.rendered)}"
+    swarm_manager_init         = "${var.join_swarm_manager_host == false}"
+    swarm_manager_join         = "${var.join_swarm_manager_host != false}"
   }
 }
 

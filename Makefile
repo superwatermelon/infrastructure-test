@@ -25,8 +25,7 @@ load: check
 		-no-color \
 		-backend=true \
 		-backend-config=backend.hcl \
-		-input=false \
-		$(TERRAFORM_DIR)
+		-input=false
 
 .PHONY: plan
 plan: check
@@ -34,8 +33,7 @@ plan: check
 		-no-color \
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
 		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
-		-out $(TFPLAN_PATH) \
-		$(TERRAFORM_DIR)
+		-out $(TFPLAN_PATH)
 
 .PHONY: keys
 keys: check
@@ -53,5 +51,4 @@ destroy: check
 	$(TERRAFORM) destroy \
 		-no-color \
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
-		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
-		$(TERRAFORM_DIR)
+		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR)

@@ -1,3 +1,5 @@
+variable "join_swarm_manager_host" { default = false }
+
 data "template_file" "swarm_docker_tcp_service" {
   template = <<EOF
 [Socket]
@@ -9,7 +11,7 @@ WantedBy=sockets.target
 EOF
 }
 
-data "template_file" "swarm_manager_service" {
+data "template_file" "swarm_manager_init_service" {
   template = <<EOF
 [Unit]
 After=docker.service
@@ -21,6 +23,23 @@ ExecStart=/bin/bash -c 'docker swarm init --advertise-addr $(curl http://169.254
 [Install]
 WantedBy=multi-user.target
 EOF
+}
+
+data "template_file" "swarm_manager_join_service" {
+  template = <<EOF
+  [Unit]
+  Requires=docker.service
+  After=docker.service
+  [Service]
+  Type=oneshot
+  RemainAfterExit=yes
+  ExecStart=/bin/bash -c 'docker swarm join --token $(docker -H $${join_swarm_manager_host} swarm join-token -q manager) $${join_swarm_manager_host}'
+  [Install]
+  WantedBy=multi-user.target
+EOF
+  vars {
+    join_swarm_manager_host = "${var.join_swarm_manager_host}"
+  }
 }
 
 data "template_file" "swarm_worker_service" {

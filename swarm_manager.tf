@@ -31,3 +31,7 @@ resource "aws_instance" "swarm_manager" {
 output "swarm_manager_public_ip" {
   value = "${aws_instance.swarm_manager.public_ip}"
 }
+
+output "swarm_manager_private_ip" {
+  value = "${aws_instance.swarm_manager.private_ip}"
+}
