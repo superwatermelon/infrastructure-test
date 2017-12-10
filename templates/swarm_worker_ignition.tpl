@@ -1,0 +1,18 @@
+{
+  "ignition":{"version":"2.0.0"},
+  "storage":{
+    "files":[{
+      "filesystem":"root",
+      "path":"/etc/coreos/docker-1.12",
+      "contents":{"source":"data:,no%0A"}
+    }]
+  },
+  "systemd":{
+    "units":[
+      {"name":"docker.socket","enable":true},
+      {"name":"containerd.service","enable":true},
+      {"name":"docker.service","enable":true},
+      {"name":"swarm-worker.service","enable":true,"contents":${swarm_worker_service}}
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "ignition":{"version":"2.0.0"},
+  "storage":{
+    "files":[{
+      "filesystem":"root",
+      "path":"/etc/coreos/docker-1.12",
+      "contents":{"source":"data:,no%0A"}
+    }]
+  },
+  "systemd":{
+    "units":[
+      {"name":"docker.socket","enable":true},
+      {"name":"containerd.service","enable":true},
+      {"name":"docker.service","enable":true},
+      {"name":"docker-tcp.socket","enable":true,"contents":${swarm_docker_tcp_service}},
+      {"name":"swarm-manager-init.service","enable":true,"contents":${swarm_manager_init_service}},
+      {"name":"swarm-manager-data.service","enable":true,"contents":${swarm_manager_data_service}},
+      {"name":"var-lib-docker-swarm.mount","enable":true,"contents":${var_lib_docker_swarm_mount}},
+      {"name":"swarm-manager-data-format.service","enable":${swarm_manager_data_format_service_enabled},"contents":${swarm_manager_data_format_service}}
+    ]
+  }
+}

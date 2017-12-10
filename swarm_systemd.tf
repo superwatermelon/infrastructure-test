@@ -1,60 +1,32 @@
-variable "join_swarm_manager_host" { default = false }
-
 data "template_file" "swarm_docker_tcp_service" {
-  template = <<EOF
-[Socket]
-ListenStream=2375
-BindIPv6Only=both
-Service=docker.service
-[Install]
-WantedBy=sockets.target
-EOF
+  template = "${file("${path.module}/templates/docker_socket_systemd.tpl")}"
 }
 
 data "template_file" "swarm_manager_init_service" {
-  template = <<EOF
-[Unit]
-After=docker.service
-Requires=docker.service
-[Service]
-Type=oneshot
-RemainAfterExit=yes
-ExecStart=/bin/bash -c 'docker swarm init --advertise-addr $(curl http://169.254.169.254/latest/meta-data/local-ipv4)'
-[Install]
-WantedBy=multi-user.target
-EOF
-}
-
-data "template_file" "swarm_manager_join_service" {
-  template = <<EOF
-  [Unit]
-  Requires=docker.service
-  After=docker.service
-  [Service]
-  Type=oneshot
-  RemainAfterExit=yes
-  ExecStart=/bin/bash -c 'docker swarm join --token $(docker -H $${join_swarm_manager_host} swarm join-token -q manager) $${join_swarm_manager_host}'
-  [Install]
-  WantedBy=multi-user.target
-EOF
-  vars {
-    join_swarm_manager_host = "${var.join_swarm_manager_host}"
-  }
+  template = "${file("${path.module}/templates/swarm_manager_init_systemd.tpl")}"
 }
 
 data "template_file" "swarm_worker_service" {
-  template = <<EOF
-[Unit]
-Requires=docker.service
-After=docker.service
-[Service]
-Type=oneshot
-RemainAfterExit=yes
-ExecStart=/bin/bash -c 'docker swarm join --token $(docker -H $${swarm_manager_host} swarm join-token -q worker) $${swarm_manager_host}'
-[Install]
-WantedBy=multi-user.target
-EOF
+  template = "${file("${path.module}/templates/swarm_worker_systemd.tpl")}"
   vars {
     swarm_manager_host = "${aws_instance.swarm_manager.private_ip}"
+  }
+}
+
+data "template_file" "swarm_manager_data_service_unit" {
+  template = "${file("${path.module}/templates/swarm_manager_data_systemd.tpl")}"
+}
+
+data "template_file" "var_lib_docker_swarm_mount_unit" {
+  template = "${file("${path.module}/templates/var_lib_docker_swarm_systemd.tpl")}"
+  vars {
+    volume = "${var.swarm_manager_volume_device}"
+  }
+}
+
+data "template_file" "swarm_manager_data_format_service" {
+  template = "${file("${path.module}/templates/swarm_manager_data_format_systemd.tpl")}"
+  vars {
+    volume = "${var.swarm_manager_volume_device}"
   }
 }

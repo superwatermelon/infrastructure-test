@@ -89,15 +89,3 @@ resource "aws_security_group_rule" "swarm_worker_from_load_balancer" {
   source_security_group_id = "${aws_security_group.swarm_load_balancer_sg.id}"
   security_group_id        = "${aws_security_group.swarm_worker_sg.id}"
 }
-
-output "swarm_load_balancer_sg" {
-  value = "${aws_security_group.swarm_load_balancer_sg.id}"
-}
-
-output "swarm_manager_sg" {
-  value = "${aws_security_group.swarm_manager_sg.id}"
-}
-
-output "swarm_worker_sg" {
-  value = "${aws_security_group.swarm_worker_sg.id}"
-}

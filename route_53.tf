@@ -1,7 +1,3 @@
-variable "hosted_zone" {
-  description = "The private hosted zone to use for this VPC."
-}
-
 resource "aws_route53_zone" "zone" {
   name    = "${var.hosted_zone}"
   comment = "The private hosted zone"
@@ -18,8 +14,4 @@ resource "aws_route53_record" "swarm_record" {
   type    = "A"
   ttl     = "300"
   records = ["${aws_instance.swarm_manager.private_ip}"]
-}
-
-output "hosted_zone_id" {
-  value = "${aws_route53_zone.zone.id}"
 }
