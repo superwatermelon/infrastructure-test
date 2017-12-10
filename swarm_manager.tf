@@ -21,15 +21,16 @@ resource "aws_instance" "swarm_manager" {
 
 resource "aws_ebs_volume" "swarm_manager" {
   availability_zone = "${aws_subnet.data.0.availability_zone}"
-  size = 10
+  size              = 10
+  type              = "gp2"
   tags {
     Name = "swarm-manager"
   }
 }
 
 resource "aws_volume_attachment" "swarm_manager" {
-  device_name = "/dev/${var.swarm_manager_volume_device}"
-  volume_id   = "${aws_ebs_volume.swarm_manager.id}"
-  instance_id = "${aws_instance.swarm_manager.id}"
+  device_name  = "/dev/${var.swarm_manager_volume_device}"
+  volume_id    = "${aws_ebs_volume.swarm_manager.id}"
+  instance_id  = "${aws_instance.swarm_manager.id}"
   skip_destroy = true
 }
