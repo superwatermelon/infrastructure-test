@@ -8,6 +8,9 @@ resource "aws_launch_configuration" "swarm_worker" {
     "${aws_security_group.swarm_worker_sg.id}",
     "${aws_security_group.swarm_node_sg.id}"
   ]
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_autoscaling_group" "swarm_worker_asg" {
