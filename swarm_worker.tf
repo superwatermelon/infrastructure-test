@@ -18,7 +18,7 @@ resource "aws_autoscaling_group" "swarm_worker_asg" {
   launch_configuration = "${aws_launch_configuration.swarm_worker.name}"
   max_size             = "${var.max_swarm_worker_count}"
   min_size             = "${var.min_swarm_worker_count}"
-  name                 = "${aws_launch_configuration.swarm_worker.name}-asg"
+  name                 = "swarm-worker-asg"
   vpc_zone_identifier  = ["${aws_subnet.private.*.id}"]
 
   tag {

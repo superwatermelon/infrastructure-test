@@ -15,3 +15,11 @@ resource "aws_route53_record" "swarm_record" {
   ttl     = "300"
   records = ["${aws_instance.swarm_manager.private_ip}"]
 }
+
+resource "aws_route53_record" "docker_registry_record" {
+  zone_id = "${aws_route53_zone.zone.zone_id}"
+  name    = "docker.${var.hosted_zone}"
+  type    = "A"
+  ttl     = "300"
+  records = ["${aws_instance.docker_registry.private_ip}"]
+}
