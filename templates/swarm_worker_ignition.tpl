@@ -9,10 +9,10 @@
   },
   "systemd":{
     "units":[
-      {"name":"docker.socket","enable":true},
-      {"name":"containerd.service","enable":true},
-      {"name":"docker.service","enable":true},
-      {"name":"swarm-worker.service","enable":true,"contents":${swarm_worker_service}}
+      {"name":"docker.socket","enabled":true},
+      {"name":"containerd.service","enabled":true},
+      {"name":"docker.service","enabled":true},
+      {"name":"swarm-worker.service","enabled":true,"contents":${swarm_worker_service}}
     ]
   }
 }

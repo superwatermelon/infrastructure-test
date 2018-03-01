@@ -17,25 +17,25 @@
     "units":[
       {
         "name":"containerd.service",
-        "enable":true
+        "enabled":true
       },
       {
         "name":"docker.service",
-        "enable":true
+        "enabled":true
       },
       {
         "name":"docker-registry.service",
-        "enable":true,
+        "enabled":true,
         "contents":${docker_registry_service}
       },
       {
         "name":"var-lib-registry.mount",
-        "enable":true,
+        "enabled":true,
         "contents":${var_lib_registry_mount}
       },
       {
         "name":"format-volume.service",
-        "enable":${format_volume_enabled},
+        "enabled":${format_volume_enabled},
         "contents":${format_volume_service}
       }
     ]

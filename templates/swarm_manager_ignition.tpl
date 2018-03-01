@@ -9,13 +9,13 @@
   },
   "systemd":{
     "units":[
-      {"name":"docker.socket","enable":true},
-      {"name":"containerd.service","enable":true},
-      {"name":"docker.service","enable":true},
-      {"name":"docker-tcp.socket","enable":true,"contents":${swarm_docker_tcp_service}},
-      {"name":"swarm-manager-init.service","enable":true,"contents":${swarm_manager_init_service}},
-      {"name":"var-lib-docker-swarm.mount","enable":true,"contents":${var_lib_docker_swarm_mount}},
-      {"name":"swarm-manager-data-format.service","enable":${swarm_manager_data_format_service_enabled},"contents":${swarm_manager_data_format_service}}
+      {"name":"docker.socket","enabled":true},
+      {"name":"containerd.service","enabled":true},
+      {"name":"docker.service","enabled":true},
+      {"name":"docker-tcp.socket","enabled":true,"contents":${swarm_docker_tcp_service}},
+      {"name":"swarm-manager-init.service","enabled":true,"contents":${swarm_manager_init_service}},
+      {"name":"var-lib-docker-swarm.mount","enabled":true,"contents":${var_lib_docker_swarm_mount}},
+      {"name":"swarm-manager-data-format.service","enabled":${swarm_manager_data_format_service_enabled},"contents":${swarm_manager_data_format_service}}
     ]
   }
 }
