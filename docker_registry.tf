@@ -2,7 +2,7 @@ resource "aws_instance" "docker_registry" {
   ami             = "${data.aws_ami.coreos.id}"
   instance_type   = "${var.docker_registry_instance_type}"
   key_name        = "${var.docker_registry_key_pair}"
-  subnet_id       = "${aws_subnet.data.0.id}"
+  subnet_id       = "${aws_subnet.data.2.id}"
   user_data       = "${data.template_file.docker_registry_ignition.rendered}"
   security_groups = [
     "${aws_security_group.docker_registry_sg.id}",
