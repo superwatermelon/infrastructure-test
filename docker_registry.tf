@@ -14,16 +14,6 @@ resource "aws_instance" "docker_registry" {
   }
 }
 
-data "template_file" "docker_registry_ignition" {
-  template = "${file("${path.module}/templates/docker_registry_ignition.tpl")}"
-  vars {
-    docker_registry_service = "${jsonencode(data.template_file.docker_registry_service.rendered)}"
-    var_lib_registry_mount  = "${jsonencode(data.template_file.var_lib_registry_mount.rendered)}"
-    format_volume_service   = "${jsonencode(data.template_file.format_volume_service.rendered)}"
-    format_volume_enabled   = "${var.docker_registry_format_data == true}"
-  }
-}
-
 resource "aws_ebs_volume" "docker_registry" {
   availability_zone = "${aws_subnet.data.2.availability_zone}"
   size              = 10
