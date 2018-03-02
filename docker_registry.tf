@@ -4,7 +4,8 @@ resource "aws_instance" "docker_registry" {
   key_name        = "${var.docker_registry_key_pair}"
   subnet_id       = "${aws_subnet.data.2.id}"
   user_data       = "${data.template_file.docker_registry_ignition.rendered}"
-  security_groups = [
+
+  vpc_security_group_ids = [
     "${aws_security_group.docker_registry_sg.id}",
     "${aws_security_group.users_sg.id}"
   ]
