@@ -8,10 +8,6 @@ variable "swarm_manager_key_pair" {
   description = "The name of the key pair to use for the Swarm Manager node"
 }
 
-variable "docker_registry_key_pair" {
-  description = "The name of the key pair to use for the Docker Registry node"
-}
-
 variable "hosted_zone" {
   description = "The private hosted zone to use for this VPC."
 }
@@ -56,21 +52,6 @@ variable "max_swarm_worker_count" {
 variable "min_swarm_worker_count" {
   description = "The minimum number of Swarm Worker nodes to allow"
   default     = 2
-}
-
-variable "docker_registry_volume_device" {
-  description = "The device name of the Docker Registry volume"
-  default     = "xvdf"
-}
-
-variable "docker_registry_format_data" {
-  description = "Should the data for the Docker Registry be formatted"
-  default     = false
-}
-
-variable "docker_registry_instance_type" {
-  description = "The AWS instance type to use for the Docker Registry node"
-  default     = "t2.nano"
 }
 
 variable "availability_zone" {

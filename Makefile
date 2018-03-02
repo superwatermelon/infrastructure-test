@@ -19,10 +19,6 @@ ifndef SWARM_WORKER_KEY_PAIR
 	$(error SWARM_WORKER_KEY_PAIR is undefined)
 endif
 
-ifndef DOCKER_REGISTRY_KEY_PAIR
-	$(error DOCKER_REGISTRY_KEY_PAIR is undefined)
-endif
-
 .PHONY: load
 load: check
 	$(TERRAFORM) init \
@@ -37,14 +33,12 @@ plan: check
 		-no-color \
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
 		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
-		-var docker_registry_key_pair=$(DOCKER_REGISTRY_KEY_PAIR) \
 		-out $(TFPLAN_PATH)
 
 .PHONY: keys
 keys: check
 	KEY_PAIR=$(SWARM_MANAGER_KEY_PAIR) scripts/init-key
 	KEY_PAIR=$(SWARM_WORKER_KEY_PAIR) scripts/init-key
-	KEY_PAIR=$(DOCKER_REGISTRY_KEY_PAIR) scripts/init-key
 
 .PHONY: apply
 apply: keys
@@ -57,5 +51,4 @@ destroy: check
 	$(TERRAFORM) destroy \
 		-no-color \
 		-var swarm_manager_key_pair=$(SWARM_MANAGER_KEY_PAIR) \
-		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR) \
-		-var docker_registry_key_pair=$(DOCKER_REGISTRY_KEY_PAIR)
+		-var swarm_worker_key_pair=$(SWARM_WORKER_KEY_PAIR)
