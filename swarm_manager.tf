@@ -8,7 +8,8 @@ resource "aws_instance" "swarm_manager" {
   key_name        = "${var.swarm_manager_key_pair}"
   subnet_id       = "${aws_subnet.data.0.id}"
   user_data       = "${data.template_file.swarm_manager_ignition.rendered}"
-  security_groups = [
+
+  vpc_security_group_ids = [
     "${aws_security_group.swarm_manager_sg.id}",
     "${aws_security_group.swarm_node_sg.id}",
     "${aws_security_group.users_sg.id}"
