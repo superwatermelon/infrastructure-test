@@ -1,6 +1,6 @@
 [Unit]
 Requires=dev-${volume}1.device
-After=dev-${volume}1.device swarm-manager-data-format.service
+After=dev-${volume}1.device format-volume.service
 [Mount]
 What=/dev/${volume}1
 Where=/var/lib/registry
