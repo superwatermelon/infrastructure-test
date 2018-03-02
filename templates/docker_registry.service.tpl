@@ -5,7 +5,7 @@ After=var-lib-registry.mount docker.service
 Restart=always
 ExecStartPre=/usr/bin/docker pull registry:2.5.2
 ExecStart=/usr/bin/docker run \
-  --detach \
+  --rm \
   --publish 5000:5000 \
   --volume /var/lib/registry:/var/lib/registry \
   --name registry \
