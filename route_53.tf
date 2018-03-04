@@ -8,16 +8,25 @@ resource "aws_route53_zone" "zone" {
   }
 }
 
+# Only required in multi-manager cluster
+# resource "aws_route53_record" "swarm_record" {
+#   zone_id = "${aws_route53_zone.zone.zone_id}"
+#   name    = "swarm.${var.hosted_zone}"
+#   type    = "A"
+#
+#   alias {
+#     name                   = "${aws_lb.swarm_manager.dns_name}"
+#     zone_id                = "${aws_lb.swarm_manager.zone_id}"
+#     evaluate_target_health = true
+#   }
+# }
+
 resource "aws_route53_record" "swarm_record" {
   zone_id = "${aws_route53_zone.zone.zone_id}"
   name    = "swarm.${var.hosted_zone}"
   type    = "A"
-
-  alias {
-    name                   = "${aws_lb.swarm_manager.dns_name}"
-    zone_id                = "${aws_lb.swarm_manager.zone_id}"
-    evaluate_target_health = true
-  }
+  ttl     = 300
+  records = ["${module.swarm_manager.private_ip}"]
 }
 
 resource "aws_route53_record" "registry_record" {

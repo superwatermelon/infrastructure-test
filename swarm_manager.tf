@@ -43,16 +43,17 @@ resource "aws_lb_listener" "registry" {
   }
 }
 
-resource "aws_lb_listener" "swarm_http" {
-  load_balancer_arn = "${aws_lb.swarm_manager.arn}"
-  port              = 2375
-  protocol          = "HTTP"
-
-  default_action {
-    target_group_arn = "${aws_lb_target_group.swarm_http.arn}"
-    type             = "forward"
-  }
-}
+# Only required in multi-manager cluster
+# resource "aws_lb_listener" "docker_client" {
+#   load_balancer_arn = "${aws_lb.swarm_manager_tcp.arn}"
+#   port              = 2375
+#   protocol          = "TCP"
+#
+#   default_action {
+#     target_group_arn = "${aws_lb_target_group.docker_client.arn}"
+#     type             = "forward"
+#   }
+# }
 
 # Only required in multi-manager cluster
 # resource "aws_lb_listener" "swarm_comms" {
@@ -78,12 +79,13 @@ resource "aws_lb_target_group_attachment" "registry" {
   target_id        = "${module.swarm_manager.instance_id}"
 }
 
-resource "aws_lb_target_group" "swarm_http" {
-  name     = "swarm-manager-swarm-http"
-  port     = 2375
-  protocol = "HTTP"
-  vpc_id   = "${aws_vpc.vpc.id}"
-}
+# Only required in multi-manager cluster
+# resource "aws_lb_target_group" "docker_client" {
+#   name     = "swarm-manager-docker-client"
+#   port     = 2375
+#   protocol = "TCP"
+#   vpc_id   = "${aws_vpc.vpc.id}"
+# }
 
 # Only required in multi-manager cluster
 # resource "aws_lb_target_group" "swarm_comms" {
@@ -93,10 +95,11 @@ resource "aws_lb_target_group" "swarm_http" {
 #   vpc_id   = "${aws_vpc.vpc.id}"
 # }
 
-resource "aws_lb_target_group_attachment" "swarm_http" {
-  target_group_arn = "${aws_lb_target_group.swarm_http.arn}"
-  target_id        = "${module.swarm_manager.instance_id}"
-}
+# Only required in multi-manager cluster
+# resource "aws_lb_target_group_attachment" "docker_client" {
+#   target_group_arn = "${aws_lb_target_group.docker_client.arn}"
+#   target_id        = "${module.swarm_manager.instance_id}"
+# }
 
 # Only required in multi-manager cluster
 # resource "aws_lb_target_group_attachment" "swarm_comms" {
