@@ -1,7 +1,7 @@
 module "swarm_worker" {
   source = "./modules/swarm-worker"
 
-  manager_host  = "${module.swarm_manager.private_ip}"
+  manager_host  = "swarm.${var.hosted_zone}"
   key_name      = "${var.swarm_worker_key_pair}"
   instance_type = "${var.swarm_worker_instance_type}"
 
