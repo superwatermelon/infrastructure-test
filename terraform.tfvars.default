@@ -1,1 +1,3 @@
 hosted_zone = "test.example.com"
+
+certificate_arn "arn:aws:acm:eu-west-1:XXXXXXXXXXXX:certificate/XXXXXXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXX"
