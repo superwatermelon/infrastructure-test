@@ -55,6 +55,8 @@ resource "aws_lb_target_group_attachment" "swarm" {
 module "swarm_manager" {
   source = "./modules/swarm-manager"
 
+  format_swarm      = "${var.swarm_manager_format_data}"
+  format_registry   = "${var.docker_registry_format_data}"
   instance_type     = "${var.swarm_manager_instance_type}"
   key_name          = "${var.swarm_manager_key_pair}"
   subnet_id         = "${aws_subnet.data.0.id}"
