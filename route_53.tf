@@ -31,7 +31,7 @@ resource "aws_route53_record" "swarm_record" {
 
 resource "aws_route53_record" "registry_record" {
   zone_id = "${aws_route53_zone.zone.zone_id}"
-  name    = "registry.${var.hosted_zone}"
+  name    = "docker.${var.hosted_zone}"
   type    = "A"
 
   alias {
