@@ -24,6 +24,16 @@ variable "swarm_manager_format_data" {
   default     = false
 }
 
+variable "docker_registry_volume_device" {
+  description = "The device name of the Docker Registry volume"
+  default     = "xvdg"
+}
+
+variable "docker_registry_format_data" {
+  description = "Should the data for the Docker Registry be formatted"
+  default     = false
+}
+
 variable "swarm_manager_instance_type" {
   description = "The AWS instance type to use for the Swarm Manager node"
   default     = "t2.micro"

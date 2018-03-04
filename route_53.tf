@@ -13,5 +13,5 @@ resource "aws_route53_record" "swarm_record" {
   name    = "swarm.${var.hosted_zone}"
   type    = "A"
   ttl     = "300"
-  records = ["${aws_instance.swarm_manager.private_ip}"]
+  records = ["${module.swarm_manager.private_ip}"]
 }

@@ -1,0 +1,3 @@
+module "coreos" {
+  source = "../coreos"
+}

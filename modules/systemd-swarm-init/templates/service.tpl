@@ -1,6 +1,6 @@
 [Unit]
-Requires=docker.service var-lib-docker-swarm.mount
-After=docker.service var-lib-docker-swarm.mount
+Requires=${requires}
+After=${after}
 [Service]
 Type=oneshot
 RemainAfterExit=yes

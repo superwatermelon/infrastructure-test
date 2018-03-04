@@ -1,13 +1,13 @@
 output "swarm_worker_asg" {
-  value = "${aws_autoscaling_group.swarm_worker_asg.id}"
+  value = "${module.swarm_worker.asg}"
 }
 
 output "swarm_manager_public_ip" {
-  value = "${aws_instance.swarm_manager.public_ip}"
+  value = "${module.swarm_manager.public_ip}"
 }
 
 output "swarm_manager_private_ip" {
-  value = "${aws_instance.swarm_manager.private_ip}"
+  value = "${module.swarm_manager.private_ip}"
 }
 
 output "hosted_zone_id" {

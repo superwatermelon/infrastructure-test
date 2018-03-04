@@ -12,7 +12,7 @@
       {"name":"docker.socket","enabled":true},
       {"name":"containerd.service","enabled":true},
       {"name":"docker.service","enabled":true},
-      {"name":"swarm-worker.service","enabled":true,"contents":${swarm_worker_service}}
+      {"name":"swarm-worker.service","enabled":true,"contents":${systemd_swarm_worker}}
     ]
   }
 }
