@@ -35,6 +35,23 @@ resource "aws_lb_target_group" "registry" {
   vpc_id   = "${aws_vpc.vpc.id}"
 }
 
+resource "aws_lb_target_group_attachment" "registry" {
+  target_group_arn = "${aws_lb_target_group.registry.arn}"
+  target_id        = "${module.swarm_manager.instance_id}"
+}
+
+resource "aws_lb_target_group" "swarm" {
+  name     = "swarm-manager-registry"
+  port     = 2375
+  protocol = "HTTP"
+  vpc_id   = "${aws_vpc.vpc.id}"
+}
+
+resource "aws_lb_target_group_attachment" "registry" {
+  target_group_arn = "${aws_lb_target_group.swarm.arn}"
+  target_id        = "${module.swarm_manager.instance_id}"
+}
+
 module "swarm_manager" {
   source = "./modules/swarm-manager"
 
