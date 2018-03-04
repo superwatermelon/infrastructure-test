@@ -2,17 +2,34 @@
  * A Swarm cluster with a single Manager.
  */
 resource "aws_lb" "swarm_manager" {
-  name            = "swarm-manager"
-  internal        = true
+  name               = "swarm-manager"
+  internal           = true
+  subnets            = ["${aws_subnet.data.*.id}"]
+  load_balancer_type = "application"
+
   security_groups = [
     "${aws_security_group.swarm_manager_sg.id}",
     "${aws_security_group.swarm_node_sg.id}",
     "${aws_security_group.registry_sg.id}"
   ]
-  subnets         = ["${aws_subnet.data.*.id}"]
 
   tags {
     Environment = "swarm-manager"
+  }
+}
+
+resource "aws_lb" "swarm_manager_tcp" {
+  name               = "swarm-manager-tcp"
+  internal           = true
+  subnets            = ["${aws_subnet.data.*.id}"]
+  load_balancer_type = "network"
+
+  security_groups = [
+    "${aws_security_group.swarm_node_sg.id}"
+  ]
+
+  tags {
+    Environment = "swarm-manager-tcp"
   }
 }
 
@@ -41,7 +58,7 @@ resource "aws_lb_listener" "swarm_http" {
 }
 
 resource "aws_lb_listener" "swarm_comms" {
-  load_balancer_arn = "${aws_lb.swarm_manager.arn}"
+  load_balancer_arn = "${aws_lb.swarm_manager_tcp.arn}"
   port              = 2377
   protocol          = "TCP"
 
