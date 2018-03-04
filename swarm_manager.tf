@@ -1,6 +1,36 @@
 /*
  * A Swarm cluster with a single Manager.
  */
+resource "aws_lb" "swarm_manager" {
+  name            = "swarm-manager"
+  internal        = true
+  security_groups = ["${aws_security_group.swarm_manager_sg.id}"]
+  subnets         = ["${aws_subnet.data.0.id}"]
+
+  tags {
+    Environment = "swarm-manager"
+  }
+}
+
+resource "aws_lb_listener" "swarm_manager" {
+  load_balancer_arn = "${aws_lb.swarm_manager.arn}"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2015-05"
+  certificate_arn   = "${var.certificate_arn}"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.registry.arn}"
+    type             = "forward"
+  }
+}
+
+resource "aws_lb_target_group" "registry" {
+  name     = "swarm-manager-registry"
+  port     = 5000
+  protocol = "HTTP"
+  vpc_id   = "${aws_vpc.vpc.id}"
+}
 
 module "swarm_manager" {
   source = "./modules/swarm-manager"
