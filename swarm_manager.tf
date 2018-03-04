@@ -6,6 +6,7 @@ resource "aws_lb" "swarm_manager" {
   internal        = true
   security_groups = [
     "${aws_security_group.swarm_manager_sg.id}",
+    "${aws_security_group.swarm_node_sg.id}",
     "${aws_security_group.registry_sg.id}"
   ]
   subnets         = ["${aws_subnet.data.*.id}"]
