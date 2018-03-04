@@ -15,8 +15,4 @@ module "swarm_worker" {
     "${aws_security_group.swarm_worker_sg.id}",
     "${aws_security_group.swarm_node_sg.id}"
   ]
-
-  tags {
-    manager = "${module.swarm_manager.instance_id}"
-  }
 }
