@@ -3,7 +3,7 @@ resource "aws_autoscaling_group" "worker" {
   launch_configuration = "${aws_launch_configuration.worker.name}"
   max_size             = "${var.max_size}"
   min_size             = "${var.min_size}"
-  name                 = "${var.name}"
+  name                 = "${aws_launch_configuration.worker.name}"
   vpc_zone_identifier  = ["${var.vpc_zone_identifier}"]
 
   tag {
