@@ -47,7 +47,7 @@ resource "aws_lb_target_group" "swarm" {
   vpc_id   = "${aws_vpc.vpc.id}"
 }
 
-resource "aws_lb_target_group_attachment" "registry" {
+resource "aws_lb_target_group_attachment" "swarm" {
   target_group_arn = "${aws_lb_target_group.swarm.arn}"
   target_id        = "${module.swarm_manager.instance_id}"
 }
