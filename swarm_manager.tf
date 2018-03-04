@@ -117,11 +117,9 @@ module "swarm_manager" {
   subnet_id         = "${aws_subnet.data.0.id}"
   availability_zone = "${aws_subnet.data.0.availability_zone}"
 
-  # Required for single manager set up where swarm state
-  # is backed up and restored via EBS. The IP address of the manager
-  # node cannot change (no workaround found to update the address of
-  # an existing node). This is different for a multi-manager set up
-  # where swarm state is instead propagated through the cluster.
+  # Documentation suggests that managers should be given a fixed
+  # IP address. For a multi-node set up do not use an autoscaling
+  # group, instead use a pool of IP addresses and terraform count.
   private_ip        = "${var.swarm_manager_private_ip}"
 
   vpc_security_group_ids = [
