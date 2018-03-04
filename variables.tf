@@ -16,14 +16,6 @@ variable "certificate_arn" {
   description = "The ARN of the SSL certificate for the Docker registry"
 }
 
-variable "certificate_verification_dns_name" {
-  description = "The name of the CNAME record to verify the certificate"
-}
-
-variable "certificate_verification_dns_value" {
-  description = "The value of the CNAME record to verify the certificate"
-}
-
 # ----- OPTIONAL VARIABLES ----- #
 
 variable "swarm_manager_volume_device" {
