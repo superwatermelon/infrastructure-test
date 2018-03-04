@@ -18,16 +18,17 @@ resource "aws_lb" "swarm_manager" {
   }
 }
 
-resource "aws_lb" "swarm_manager_tcp" {
-  name               = "swarm-manager-tcp"
-  internal           = true
-  subnets            = ["${aws_subnet.data.*.id}"]
-  load_balancer_type = "network"
-
-  tags {
-    Environment = "swarm-manager-tcp"
-  }
-}
+# Only required in multi-manager cluster
+# resource "aws_lb" "swarm_manager_tcp" {
+#   name               = "swarm-manager-tcp"
+#   internal           = true
+#   subnets            = ["${aws_subnet.data.*.id}"]
+#   load_balancer_type = "network"
+#
+#   tags {
+#     Environment = "swarm-manager-tcp"
+#   }
+# }
 
 resource "aws_lb_listener" "registry" {
   load_balancer_arn = "${aws_lb.swarm_manager.arn}"
@@ -53,16 +54,17 @@ resource "aws_lb_listener" "swarm_http" {
   }
 }
 
-resource "aws_lb_listener" "swarm_comms" {
-  load_balancer_arn = "${aws_lb.swarm_manager_tcp.arn}"
-  port              = 2377
-  protocol          = "TCP"
-
-  default_action {
-    target_group_arn = "${aws_lb_target_group.swarm_comms.arn}"
-    type             = "forward"
-  }
-}
+# Only required in multi-manager cluster
+# resource "aws_lb_listener" "swarm_comms" {
+#   load_balancer_arn = "${aws_lb.swarm_manager_tcp.arn}"
+#   port              = 2377
+#   protocol          = "TCP"
+#
+#   default_action {
+#     target_group_arn = "${aws_lb_target_group.swarm_comms.arn}"
+#     type             = "forward"
+#   }
+# }
 
 resource "aws_lb_target_group" "registry" {
   name     = "swarm-manager-registry"
@@ -83,22 +85,24 @@ resource "aws_lb_target_group" "swarm_http" {
   vpc_id   = "${aws_vpc.vpc.id}"
 }
 
-resource "aws_lb_target_group" "swarm_comms" {
-  name     = "swarm-manager-swarm-comms"
-  port     = 2377
-  protocol = "TCP"
-  vpc_id   = "${aws_vpc.vpc.id}"
-}
+# Only required in multi-manager cluster
+# resource "aws_lb_target_group" "swarm_comms" {
+#   name     = "swarm-manager-swarm-comms"
+#   port     = 2377
+#   protocol = "TCP"
+#   vpc_id   = "${aws_vpc.vpc.id}"
+# }
 
 resource "aws_lb_target_group_attachment" "swarm_http" {
   target_group_arn = "${aws_lb_target_group.swarm_http.arn}"
   target_id        = "${module.swarm_manager.instance_id}"
 }
 
-resource "aws_lb_target_group_attachment" "swarm_comms" {
-  target_group_arn = "${aws_lb_target_group.swarm_comms.arn}"
-  target_id        = "${module.swarm_manager.instance_id}"
-}
+# Only required in multi-manager cluster
+# resource "aws_lb_target_group_attachment" "swarm_comms" {
+#   target_group_arn = "${aws_lb_target_group.swarm_comms.arn}"
+#   target_id        = "${module.swarm_manager.instance_id}"
+# }
 
 module "swarm_manager" {
   source = "./modules/swarm-manager"
