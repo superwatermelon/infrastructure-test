@@ -21,7 +21,7 @@ variable "desired_capacity" {
 
 variable "max_size" {
   description = "The maximum number of workers to launch"
-  default     = 999
+  default     = 20
 }
 
 variable "min_size" {
