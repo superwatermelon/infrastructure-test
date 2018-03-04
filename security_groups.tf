@@ -26,6 +26,16 @@ resource "aws_security_group" "swarm_manager_sg" {
   }
 }
 
+resource "aws_security_group" "registry_sg" {
+  name        = "registry"
+  description = "Docker registry"
+  vpc_id      = "${aws_vpc.vpc.id}"
+
+  tags {
+    Name = "registry"
+  }
+}
+
 resource "aws_security_group" "swarm_worker_sg" {
   name        = "swarm-worker"
   description = "Swarm workers"
