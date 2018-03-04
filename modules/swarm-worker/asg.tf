@@ -16,4 +16,8 @@ resource "aws_autoscaling_group" "worker" {
     "OldestLaunchConfiguration",
     "OldestInstance"
   ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }

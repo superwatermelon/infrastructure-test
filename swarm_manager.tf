@@ -29,13 +29,24 @@ resource "aws_lb_listener" "registry" {
   }
 }
 
-resource "aws_lb_listener" "swarm" {
+resource "aws_lb_listener" "swarm_http" {
   load_balancer_arn = "${aws_lb.swarm_manager.arn}"
   port              = 2375
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = "${aws_lb_target_group.swarm.arn}"
+    target_group_arn = "${aws_lb_target_group.swarm_http.arn}"
+    type             = "forward"
+  }
+}
+
+resource "aws_lb_listener" "swarm_comms" {
+  load_balancer_arn = "${aws_lb.swarm_manager.arn}"
+  port              = 2377
+  protocol          = "TCP"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.swarm_comms.arn}"
     type             = "forward"
   }
 }
@@ -52,15 +63,27 @@ resource "aws_lb_target_group_attachment" "registry" {
   target_id        = "${module.swarm_manager.instance_id}"
 }
 
-resource "aws_lb_target_group" "swarm" {
-  name     = "swarm-manager-swarm"
+resource "aws_lb_target_group" "swarm_http" {
+  name     = "swarm-manager-swarm-http"
   port     = 2375
   protocol = "HTTP"
   vpc_id   = "${aws_vpc.vpc.id}"
 }
 
-resource "aws_lb_target_group_attachment" "swarm" {
-  target_group_arn = "${aws_lb_target_group.swarm.arn}"
+resource "aws_lb_target_group" "swarm_comms" {
+  name     = "swarm-manager-swarm-comms"
+  port     = 2377
+  protocol = "TCP"
+  vpc_id   = "${aws_vpc.vpc.id}"
+}
+
+resource "aws_lb_target_group_attachment" "swarm_http" {
+  target_group_arn = "${aws_lb_target_group.swarm_http.arn}"
+  target_id        = "${module.swarm_manager.instance_id}"
+}
+
+resource "aws_lb_target_group_attachment" "swarm_comms" {
+  target_group_arn = "${aws_lb_target_group.swarm_comms.arn}"
   target_id        = "${module.swarm_manager.instance_id}"
 }
 
