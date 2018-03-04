@@ -4,7 +4,7 @@ module "swarm_worker" {
   # Only required in multi-manager cluster
   # manager_host  = "swarm.${var.hosted_zone}"
 
-  manager_host  = "${var.swarm_manager_private_ip}"
+  manager_host  = "${module.swarm_manager.private_ip}"
   key_name      = "${var.swarm_worker_key_pair}"
   instance_type = "${var.swarm_worker_instance_type}"
 
