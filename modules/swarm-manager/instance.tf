@@ -4,6 +4,7 @@ resource "aws_instance" "manager" {
   key_name        = "${var.key_name}"
   subnet_id       = "${var.subnet_id}"
   user_data       = "${data.template_file.ignition.rendered}"
+  private_ip      = "${var.private_ip}"
 
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
 

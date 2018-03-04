@@ -37,30 +37,35 @@ variable "format_registry" {
 
 variable "swarm_volume_name" {
   description = "The name tag suffix to give the Swarm state volume"
-  default = "swarm"
+  default     = "swarm"
 }
 
 variable "swarm_volume_size" {
   description = "The size of the volume used to store Swarm state"
-  default = 10
+  default     = 10
 }
 
 variable "swarm_volume_device" {
   description = "The device name for the volume used to store Swarm state"
-  default = "xvdf"
+  default     = "xvdf"
 }
 
 variable "registry_volume_name" {
   description = "The name tag suffix to give the Docker image registry volume"
-  default = "registry"
+  default     = "registry"
 }
 
 variable "registry_volume_size" {
   description = "The size of the volume used to store Docker images"
-  default = 10
+  default     = 10
 }
 
 variable "registry_volume_device" {
   description = "The device name for the volume used to store Docker images"
-  default = "xvdg"
+  default     = "xvdg"
+}
+
+variable "private_ip" {
+  description = "The private IP address to assigned the Swarm manager"
+  default     = false
 }

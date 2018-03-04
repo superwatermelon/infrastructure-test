@@ -28,6 +28,11 @@ variable "swarm_manager_format_data" {
   default     = false
 }
 
+variable "swarm_manager_private_ip" {
+  description = "The private IP address to assign to Swarm manager"
+  default     = "10.128.34.10"
+}
+
 variable "docker_registry_volume_device" {
   description = "The device name of the Docker Registry volume"
   default     = "xvdg"
