@@ -16,6 +16,10 @@ variable "certificate_arn" {
   description = "The ARN of the SSL certificate for the Docker registry"
 }
 
+variable "app_cert_arn" {
+  description = "The ARN of the SSL certificate for the app / front-end"
+}
+
 # ----- OPTIONAL VARIABLES ----- #
 
 variable "swarm_manager_volume_device" {
