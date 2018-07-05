@@ -20,6 +20,14 @@ variable "app_cert_arn" {
   description = "The ARN of the SSL certificate for the app / front-end"
 }
 
+variable "blog_artifact_bucket_name" {
+  description = "The name to give the blog artifacts bucket"
+}
+
+variable "public_hosted_zone" {
+  description = "The public facing hosted zone"
+}
+
 # ----- OPTIONAL VARIABLES ----- #
 
 variable "swarm_manager_volume_device" {
